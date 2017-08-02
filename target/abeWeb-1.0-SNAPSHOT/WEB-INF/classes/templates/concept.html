@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>属性加密演示系统</title>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</head>
+<body>
+    <div th:include="fragment :: css"></div>
+    <div th:include="fragment :: nav"></div>
+    <div class="container">
+        <div class="passage">
+            <h4 class="little-title">
+                门限秘密共享方案
+            </h4>
+            <div class="main-text">
+                Shamir 提出的门限秘密共享方案，用多项式插值的算法实现，简单有效易于实现，是属性加密系统中使用最多的秘密共享方式。
+                <br />设一个秘密N被分成了n份，每一份被一个保管者持有，门限值设为 m(\(m \le n\))，那么这个(m, n)门限共享方案的会产生两种结果:
+                <br />知晓至少 m 份分享可以解密秘密 N。
+                <br />知晓任意 m-1 或更少的分享无法解密。
+                <br />该门限共享方案的原理是基于多项式插值，生成一个度为 m-1 的多项式 f(x)，设 f(0)=N，每一个分享是多项式上的一个点，给定任意 m 个分享值就可以通过多项式 插值得到多项式系数，从而恢复秘密 N。
+            </div>
+        </div>
+        <div class="passage">
+            <h4 class="little-title">
+                拉格朗日插值
+            </h4>
+            <div class="main-text">
+                设\(f(x)\)为n次多项式,假如给定n+1个不同点值\((x_i,f(x_i))\),则能唯一确定\(f(x)为:f(x)= \sum_{i=1}^n f(x_i)( \prod_{1≤k≤n} \frac{(x-x_k)}{(x_j-x_k)}) \)
+                <br />定义拉格朗日系数\(△_{i,s}(x)= \prod_{i \in s,i \neq j} \frac{x-j}{i-j} \)            </div>
+        </div>
+
+        <div class="passage">
+            <h4 class="little-title">
+                访问结构
+            </h4>
+            <div class="main-text">
+                设集合\(\{P_1,P_2,...,P_n\}\)由n个参与者组成,\(A \subseteq 2^{(P_1,P_2,...,P_n)}\)是一个非空子集.如果\( \forall B,C有 (B \in A) , (B \subseteq C) \to C \in A\),则称A是单调的,使参与者集合P上的一个访问结构.
+                若\( \exists A \subseteq 2^{(P_1,P_2,...,P_n)} \ \{ \varnothing \} \),则称A是一个授权集合,否则A为一个费授权集合.
+                <br />
+                在 CP-ABE 方案中，访问规则是根据属性来制定的，因此访问结构 包含了经授权的属性集。
+            </div>
+        </div>
+
+        <div class="passage">
+            <h4 class="little-title">
+                双线性对
+            </h4>
+            <div class="main-text">
+                设p为大素数,\(G_0和G_1\)是阶为p的乘法循环群,g为群\(G_0\)的生成元,双线性对定义为映射\(e:G_0×G_0→G_1\),如果它满足如下性质:
+                <ol>
+                    <li>
+                        双线性:\( \forall g \in G_0, \forall a,b \in Z_p,有e(g^a,g^b)=e(g,g)^{a,b}\),所以双线性映射e是对称的.
+                    </li>
+                    <li>
+                        非退化性:\( \exists g \in G_0,使得e(g,g) \neq 1,即e(g,g)不是群G_0的单位元\)
+                    </li>
+                    <li>
+                        可计算性:存在有效算法可计算\(e(g,g)\),则称\(G_0\)是一个双线性群.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div th:include="fragment :: js"></div>
+</body>
+</html>

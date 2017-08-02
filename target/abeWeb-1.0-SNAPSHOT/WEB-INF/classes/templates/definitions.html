@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>属性加密演示系统</title>
+</head>
+<body>
+    <div th:include="fragment :: css"></div>
+    <div th:include="fragment :: nav"></div>
+    <div class="container">
+        <div class="passage">
+            <h4 class="little-title">
+                主体
+            </h4>
+            <p class="main-text">
+                是指提出访问资源的具体请求。是某一操作动作的发起者，但不一定是动作的执行者，可能是某一用户，也可以是用户启动的进程、服务和设备等。
+            </p>
+        </div>
+        <div class="passage">
+            <h4 class="little-title">
+                客体
+            </h4>
+            <p class="main-text">
+                是指被访问资源的实体。所有可以被操作的信息、资源、对象都可以是客体。客体可以是信息、文件、记录等集合体，也可以是网络上硬件设施、无限通信中的终端，甚至可以包含另外一个客体。
+            </p>
+        </div>
+        <div class="passage">
+            <h4 class="little-title">
+                私钥(SK)
+            </h4>
+            <p class="main-text">
+                利用公钥(PK)和主密钥(MK)所生成的与用户属性相关联的一个加密文件。
+            </p>
+        </div>
+        <div class="passage">
+            <h4 class="little-title">
+                属性串(S)
+            </h4>
+            <p class="main-text">
+                单个属性形如"name:value",其中"name"表示该属性的名称,"value"表示该属性的值,属性名称与属性值间使用":"连接。属性名称与属性值均为以字母、数字组成的字符串。注意:"of"为系统保留关键字，关键字不得作为属性名称或属性值。<br />
+                多个属性间使用" "(空格)分隔，以形成属性串。
+            </p>
+        </div>
+        <!--<div class="passage">-->
+            <!--<h4 class="little-title">-->
+                <!--访问控制策略(T)-->
+            <!--</h4>-->
+            <!--<p class="main-text">-->
+                <!--n𝑓n和1𝑜𝑓n的门来表达树中“AND”门和“OR”门-->
+            <!--</p>-->
+        <!--</div>-->
+
+    </div>
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="row-pane col-md-6">-->
+                <!--<div class="row-img"><img style="width: 50%;" th:src="@{/images/index.png}" /></div>-->
+                <!--<p class="row-small-title">{ 主体 }</p>-->
+                <!--<div class="row-small-content">-->
+                    <!--<p>-->
+                    <!--是指提出访问资源的具体请求。是某一操作动作的发起者，但不一定是动作的执行者，可能是某一用户，也可以是用户启动的进程、服务和设备等。-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row-pane col-md-6">-->
+                <!--<div class="row-img"><img style="width: 50%;" th:src="@{/images/index.png}" /></div>-->
+                <!--<p class="row-small-title">{ 客体 }</p>-->
+                <!--<div class="row-small-content">-->
+                    <!--<p>是指被访问资源的实体。所有可以被操作的信息、资源、对象都可以是客体。客体可以是信息、文件、记录等集合体，也可以是网络上硬件设施、无限通信中的终端，甚至可以包含另外一个客体。</p>-->
+
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row-pane col-md-6">-->
+                <!--<div class="row-img"><img style="width: 50%;" th:src="@{/images/index.png}" /></div>-->
+                <!--<p class="row-small-title">{ 私钥(SK) }</p>-->
+                <!--<div class="row-small-content">-->
+                    <!--<p>利用公钥(PK)和主密钥(MK)所生成的与用户属性相关联的一个加密文件。</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row-pane col-md-6">-->
+                <!--<div class="row-img"><img style="width: 50%;" th:src="@{/images/index.png}" /></div>-->
+                <!--<p class="row-small-title">{ 属性串(S) }</p>-->
+                <!--<div class="row-small-content">-->
+                    <!--<p>单个属性形如"name:value",其中"name"表示该属性的名称,"value"表示该属性的值,属性名称与属性值间使用":"连接。属性名称与属性值均为以字母、数字组成的字符串。注意:"of"为系统保留关键字，关键字不得作为属性名称或属性值。<br />-->
+                    <!--多个属性间使用" "(空格)分隔，以形成属性串。</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div th:include="fragment :: js"></div>
+</body>
+</html>

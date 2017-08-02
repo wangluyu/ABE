@@ -1,0 +1,31 @@
+<div th:fragment="body">
+    <br />
+    <b>算法介绍:</b>
+    <ul>
+        <li>初始化算法，生成公钥(publicKey)和主密钥(masterKey)。</li>
+        <li>在实际应用中，初始化算法由管理员执行一次即可，生成的publicKey与masterKey保存在服务器中，供其他算法使用。</li>
+    </ul>
+    <b>所需操作:</b>
+    <ol>
+        <li>点击下方按钮，生成公钥与主密钥，并将文件保存至本地。</li>
+        <li>下载完成后，在本地解压"公钥与主密钥.zip"文件。</li>
+        <li>点击"下一步"。</li>
+    </ol>
+    <br />
+    <button id="setupButton" type="button" class="btn btn-primary btn-block">获取公钥(publicKey)与主密钥(masterKey)</button>
+</div>
+<div th:fragment="js">
+<script>
+    $(function () {
+        $('#setupButton').click(function () {
+            var form = $("<form></form>");   //定义一个form表单
+            form.attr('style','display:none');   //在form表单中添加查询参数
+            form.attr('target','');
+            form.attr('method','post');
+            form.attr('action',url + "/file/setup");
+            $('body').append(form);  //将表单放置在web中
+            form.submit();   //表单提交
+        });
+    });
+</script>
+</div>

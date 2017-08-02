@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>属性加密演示系统</title>
+</head>
+<div th:include="fragment :: css"></div>
+<link rel="stylesheet" type="text/css" th:href="@{/datatables/css/dataTables.bootstrap.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/prettify.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/fileinput/css/fileinput.min.css}"/>
+<body>
+<div th:include="fragment :: nav"></div>
+<div class='container'>
+    <div id="wizard" class="passage">
+        <h3 class="little-title">
+           算法演示
+        </h3>
+
+        <div id="rootwizard" class="main-text">
+            <ul>
+                <li><a href="#tab1" data-toggle="tab"><span class="label">1</span> 初始化算法</a></li>
+                <li><a href="#tab2" data-toggle="tab"><span class="label">2</span> 私钥生成算法</a></li>
+                <li><a href="#tab3" data-toggle="tab" id="encrypt-a"><span class="label">3</span> 加密算法</a></li>
+                <li><a href="#tab4" data-toggle="tab"><span class="label">4</span> 解密算法</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="tab1">
+                    <div th:include="setup :: body"></div>
+                </div>
+                <div class="tab-pane" id="tab2">
+                    <div th:include="keygen :: body"></div>
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <div th:include="encrypt :: body"></div>
+                </div>
+                <div class="tab-pane" id="tab4">
+                    <div th:include="decrypt :: body"></div>
+                </div>
+                <ul class="pager wizard">
+                    <li class="previous first" style="display:none;"><a href="#">第一步</a></li>
+                    <li class="previous"><a href="#">上一步</a></li>
+                    <li class="next last" style="display:none;"><a href="#">最后一步</a></li>
+                    <li class="next"><a href="#">下一步</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="fragment :: js"></div>
+<script th:src="@{/js/jquery.bootstrap.wizard.min.js}"></script>
+<script th:src="@{/js/prettify.js}"></script>
+<div th:include="fragment :: fileinputjs"></div>
+<script>
+    $(document).ready(function() {
+        $('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});
+    });
+</script>
+<div th:include="setup :: js"></div>
+<div th:include="keygen :: js"></div>
+<div th:include="encrypt :: js"></div>
+<div th:include="decrypt :: js"></div>
+</body>
+</html>

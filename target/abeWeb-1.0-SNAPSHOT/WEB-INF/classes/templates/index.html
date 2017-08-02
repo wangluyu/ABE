@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>属性加密演示系统</title>
+</head>
+<body>
+    <div th:include="fragment :: css"></div>
+    <!--弹窗-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/modal.css}"/>
+    <div th:include="fragment :: nav"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 article-block">
+                <div class="title-block">
+                    <span class="big-title">什么是</span>
+                    <span class="small-title">基于属性加密</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default border-left-blue">
+            <div class="panel-body">
+                基于属性加密把身份标识看作是一系列的属性集合，属性即用户所具有的信息要素，将密文和用户私钥与属性关联，当用户所拥有的身份属性和密文相匹配时，才可以解密密文，从而实现更加灵活的访问控制策略和更加细微的粒度控制。
+            </div>
+        </div>
+        <div class="panel panel-default border-left-red">
+            <h4 class="text-danger title-panel">举个例子</h4>
+            <div class="panel-body">
+                假设老师让所有的学生将自己的毕业设计文件上传到教学系统上。并规定只有学生本人以及本院老师可以阅读此文件。
+                <br />由于上传到系统的文件都需要加密，某一位学生可以设定用于解密该文件的访问控制策略：（“组织机构：深圳大学计算机与软件学院” AND （“学号：2013001” OR“角色：老师”））。
+                <br />通过设定访问控制策略这种方式，意味着这位学生的毕业设计文件只能被深圳大学计算机与软件学院的学号为2013001的学生或者深圳大学计算机与软件学院的所有老师所解密。
+            </div>
+        </div>
+        <div class="panel panel-default border-left-yellow">
+            <h4 class="text-warning title-panel">属性加密的特点</h4>
+            <div class="panel-body">
+                在基于密文策略的属性加密机制下，当一位用户上传数据时，由于数据是被加密的，因此他应该要设定一个具体的访问控制策略，这个访问控制策略用于控制谁能解密此数据。
+                <br />这种方式的好处在于，访问控制策略可以由数据的拥有者来灵活设定，所有用户都能够访问加密后的资源，但只有符合访问策略的用户才可以访问解密后的资源。
+                <br />这里满足访问控制策略的用户可能有一个，也可能有多个甚至没有人能够解密，当然这种情况没有什么意义。这种一对多的创新方式与传统的公钥加密有着本质的区别，同时引入了访问结构和门限控制，能够灵活的指定访问策略，这是基于属性加密的灵魂所在。
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12 article-block">
+                <div class="title-block">
+                    <span class="big-title">为什么</span>
+                    <span class="small-title">要使用基于属性加密</span>
+                </div>
+                <div class="panel panel-default border-left-blue">
+                    <div class="panel-body">
+                        目前的最常用的加密算法有对称加密（如AES、DES）和非对称加密（如RSA）。
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <section class="cd-section" style="background-color: rgba(0, 189, 112, 0.52)">
+                            <!-- section content here -->
+                            <img class="img-responsive center-block" th:src="@{/images/pk.png}" />
+                            <div class="cd-modal-action">
+                                <a href="#0" class="btn" data-type="modal-trigger">了解对称加密</a>
+                                <span class="cd-modal-bg"></span>
+                            </div>
+                            <div class="cd-modal">
+                                <div class="cd-modal-content">
+                                    <p style=""><b>对称加密</b></p>
+                                    <hr />
+                                    <p>
+                                        加密方使用密钥加密明文得到密文，解密方再使用同一个密钥解密可以得到明文。
+                                        <br />对称加密是最快速、最简单的一种加密方式。
+                                        <br />但是安全性不高，因为加密与解密用的是同样的密钥。
+                                    </p>
+                                    <div>
+                                        <img class="col-sm-12" th:src="@{/images/duichen.jpg}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#0" class="cd-modal-close">Close</a>
+                        </section>
+                    </div>
+                    <div class="col-sm-6">
+                        <section class="cd-section" style="background-color: rgba(0, 189, 112, 0.52)">
+                            <!-- section content here -->
+                            <img class="img-responsive center-block" th:src="@{/images/sk.png}" />
+                            <div class="cd-modal-action">
+                                <a href="#0" class="btn" data-type="modal-trigger">了解非对称加密</a>
+                                <span class="cd-modal-bg"></span>
+                            </div>
+                            <div class="cd-modal">
+                                <div class="cd-modal-content">
+                                    <p style=""><b>非对称加密</b></p>
+                                    <hr />
+                                    <img class="col-sm-12" th:src="@{/images/feiduichen2.jpg}" />
+                                    <p>
+                                        A持有两个密钥，分别为公共密钥（简称公钥）以及私有密钥（简称私钥）。
+                                        <br />A可以将公钥传递给C，C使用A的公钥加密数据后将密文传递给A，A可以使用自己的私钥解密此数据。
+                                    </p>
+                                    <hr />
+                                    <img class="col-sm-12" th:src="@{/images/feiduichen.jpg}" />
+                                    <p>
+                                        <br />用私钥A可以解密密文A，但是私钥A并不能解密密文C。
+                                        <br />从以上描述可以看出来，私钥以及公钥是相互配对的，只有同对的私钥能解密同队公钥加密的数据。
+                                        <br />这里公钥我们可以把它想象成是一把锁，私钥则是钥匙，一把钥匙只能开一把锁，因此非对称加密的加密模式是一对一的。
+                                    </p>
+                                    <hr />
+                                    <img class="col-sm-12" th:src="@{/images/feiduichen1.jpg}" />
+                                    <p>
+                                        假设一个系统拥有一万的用户量，那么系统需要存储所有一万个公钥。
+                                        系统需要加密一个数据时，服务器根据数据库或者其他数据判断哪些用户能读取这个数据，假设有n个用户有权限能读取这个数据，服务器需要使用这n个用户的公钥将这份数据加密n次。
+                                        从安全性上来说，就算服务器被攻击，泄露的只是公钥以及密文，攻击者如果持有私钥是无法解密的。
+                                        但从效率以及性能方面来说，我们可以看到公钥以及密文的存储开销很大，在分布式存储方面使用非对称加密显然是不现实的。
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="#0" class="cd-modal-close">Close</a>
+                        </section>
+                    </div>
+                </div><br />
+                <div class="panel panel-default border-left-red">
+                    <h4 class="text-danger title-panel">对称加密的优缺点</h4>
+                    <div class="panel-body">
+                        对称加密是最快速、最简单的一种加密方式。<br />
+                        <br />但是安全性不高，因为加密与解密用的是同样的密钥，而密钥是存储在服务器中的，一旦服务器的数据泄露，使用密钥就可以解密所有的加密数据。
+                        <br />数据的安全性很大程度上需要依赖于服务器的可靠性。
+                    </div>
+                </div>
+                <div class="panel panel-default border-left-blue">
+                    <h4 class="text-primary title-panel">非对称加密的优缺点</h4>
+                    <div class="panel-body">
+                        从安全性上来说，非对称加密的加密模式是一对一的，就算服务器被攻击，泄露的只是公钥以及密文，攻击者如果持有私钥是无法解密的。
+                        <br />从效率以及性能方面来说，我们可以看到公钥以及密文的存储开销很大，在分布式存储方面使用非对称加密显然是不现实的。
+                    </div>
+                </div>
+                <div class="panel panel-default border-left-green">
+                    <h4 class="text-success title-panel">基于属性加密的优势</h4>
+                    <div class="panel-body">
+                        基于属性加密与非对称加密一样，使用的公钥加密，私钥解密。因此安全性是可以得到保障的。
+                        <br />不同的是，基于属性加密只需生成一个公钥，通过设置访问控制策略的方式来控制哪些用户可以解密，因此大大减小了服务器对于存储公钥以及密文的开销。
+                        <br />加密解密效率和私钥的大小仅与单个用户拥有的属性个数相关，而该服务器中用户的数量对其没有任何影响。因此属性加密技术在分布式云存储领域具有极大的应用前景以及发展空间。
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 article-block">
+                        <div class="title-block">
+                            <span class="small-title">基于属性加密的</span>
+                            <span class="big-title">应用领域</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default border-left-green">
+                    <div class="panel-body">
+                        属性加密机制在社交网络系统、分布式云存储等领域上有着良好的应用前景。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:include="fragment :: js"></div>
+    <!--弹窗-->
+    <script th:src="@{/js/velocity.min.js}"></script>
+    <script th:src="@{/js/modal.js}"></script>
+</body>
+</html>

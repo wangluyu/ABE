@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>属性加密演示系统</title>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</head>
+<body>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/demo.css}"/>-->
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/tabs.css}"/>-->
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/tabstyles.css}"/>-->
+    <div th:include="fragment :: css"></div>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/prettify.css}"/>
+
+    <div th:include="fragment :: nav"></div>
+    <div class="container" style="padding-left:0px;padding-right: 0px;">
+        <div class="passage" id="wizard">
+            <h3 class="little-title" >
+                算法介绍
+            </h3>
+            <br />
+            <div id="rootwizard" class="main-text">
+                <ul>
+                    <li><a href="#tab1" data-toggle="tab"><span class="label">1</span> 初始化算法</a></li>
+                    <li><a href="#tab2" data-toggle="tab"><span class="label">2</span> 私钥生成算法</a></li>
+                    <li><a href="#tab3" data-toggle="tab"><span class="label">3</span> 加密算法</a></li>
+                    <li><a href="#tab4" data-toggle="tab"><span class="label">4</span> 解密算法</a></li>
+                </ul>
+                <br />
+                <div class="tab-content" style="margin-top: 20px;padding: 0 20px">
+                    <div class="tab-pane" id="tab1">
+                        <div class="panel panel-default border-left-red">
+                            <div class="panel-body">
+                                初始化阶为素数p的乘法循环群G_0,设置g为G的生成元。
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-red">
+                            <div class="panel-body">
+                                随机选取两个指数\(α,β \in Z_p \),计算\(h=g^β,f=g^{1/g},k=e(g,g)^α \)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-red">
+                            <div class="panel-body">
+                                生成\(PK=(G_0,g,h,f,k)\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-red">
+                            <div class="panel-body">
+                                生成\(MK=(β,g^α)\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-red">
+                            <div class="panel-body">
+                                序列化PK,MK,并输出公钥(PK),主密钥(MK)文件
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="panel panel-default border-left-blue">
+                            <div class="panel-body">
+                                输入公钥PK,主密钥MK以及用户属性串S,j为属性串中的单个属性,\(j \in S\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-blue">
+                            <div class="panel-body">
+                                随机选取一个随机数\(r \in Z_p \)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-blue">
+                            <div class="panel-body">
+                                对每一个\(j \in S\)选取随机数\(r_j \in Z_p \),计算\(D=g^{(α+r)/β}, \forall j \in S:D_j=g^r \cdot H(j)^{r_j},D_j^,=g^{r_j} \)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-blue">
+                            <div class="panel-body">
+                                生成\(SK=(D,\forall j \in S:D_j,D_j^,)\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-blue">
+                            <div class="panel-body">
+                                序列化SK,并输出秘钥(SK)文件
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                输入公钥PK,访问控制策略,明文M
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                构建访问控制策略对应的访问树T:其叶子节点为数据所有者设定的属性和属性值以及父节点传于此节点的秘密值，并对其加密处理，只有数据访问者拥有此属性方可解密出此节点的秘密值；非叶子节点为门限节点，数据访问者需满足此门限最低值方可解密此节点秘密值。例如门限为2of3，此节点有3个子节点，数据访问者需至少满足2个子节点才能解密出秘密值。
+                                <img style="display:block;" th:src="@{/images/tree.png}" />
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                为访问数的每个节点设置秘密数:该算法 首先会对访问树Τ中的每一个门限节点x选取一个多项式\(f_x\)，多项 式的构造将从根节点自上而下采取如下方式：设\(k_x\)为该节点的门限值，多项式的度\(d_x=k_x-1\)。首先,自上而下从根节点开始,对于根节点R，算法随机选取一个秘密数\(s \in Z_p\)，秘密数s为该多项式的常数项,即\(f_R(0)=s\)，然后设置其多项式\(f_R\),\(f_R\)的其他系数随机选取。
+                                对于其余节点x,其秘密数\(s_x=f_x(0)=f_{parent(x)}(index(x))\),此公式的意思为
+                                将孩子节点的标记值index(x)从左至右依次标记为1,2,3,...,将节点标记值代入父节点的多项式\(f_{parent(x)}\)中，所得值即为该节点的秘密数。
+                                <img style="display:block;" th:src="@{/images/tree02.png}" />
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                根据上一步得到的所有节点的秘密数,计算\(C^,=Me(g,g^{αs}),C=h^s,\forall x \in T:C_x=g^{s_x},C_x^,=H(att(x))^{s_x}\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                生成\(CT=(T,C^,,\forall x \in T:C_x,C_x^,)\)
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-yellow">
+                            <div class="panel-body">
+                                序列化CT,并保存密文(SK)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                        <div class="panel panel-default border-left-green">
+                            <div class="panel-body">
+                                首先定义递归算法DecryptNode(CT,SK,x),该递归算法的作用为计算出该节点的秘密数,它以密文CT,私钥SK以及访问树T的节点x作为输入。递归算法的计算过程如下图所示。
+                                <img style="display:block;" th:src="@{/images/01.png}" />
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-green">
+                            <div class="panel-body">
+                                <p>自下而上遍历访问树调用递归算法。</p>
+                                访问树T的节点x分两种情况:x为属性结点,x为门限节点。
+                                <ol>
+                                    <li>当x为属性结点时，令i=att(x),如果i∈S,那么调用递归算法DecryptNode(CT,SK,x),算出该节点的秘密数\(s_x\)。</li>
+                                    <li>x为门限节点,对于x的所有子节点z,计算\(F_z\) = DecryptNode(CT,K,z)。根据下图所示计算该门限节点的秘密数
+                                        <img style="display:block;" th:src="@{/images/02.png}" />
+                                        现在我们用一个简单的例子来理解上图公式所表达的意思,假设我们已经求出了该门限节点下所有属性节点的秘密数:
+                                        <img style="display:block;" th:src="@{/images/tree04.png}" />
+                                        换句话说,我们现在知道该门限节点所对应的多项式f(x)上有三个点,分别为(1,8),(2,11),(3,14)。而我们的目标是要求出该门限节点的秘密数，也就是f(0)。根据多项式插值法我们可以得知,若f(x)的度为m,给定任意m+1个点就可以得到多项式的系数,从而求出f(0)。
+                                        对于根节点(根节点必为门限节点)有:
+                                        <img style="display:block;" th:src="@{/images/03.png}" />
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="panel panel-default border-left-green">
+                            <div class="panel-body">
+                                算法通过下面计算解密得出明文
+                                <img style="display:block;" th:src="@{/images/04.png}" />
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="pager wizard">
+                        <li class="previous first" style="display:none;"><a href="#">第一步</a></li>
+                        <li class="previous"><a href="#">上一步</a></li>
+                        <li class="next last" style="display:none;"><a href="#">最后一步</a></li>
+                        <li class="next"><a href="#">下一步</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--<div class="main-text">-->
+                <!--<ul id="myTab" class="nav nav-tabs">-->
+                    <!--<li class="active">-->
+                        <!--<a href="#setup" data-toggle="tab">-->
+                            <!--setup-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#keygen" data-toggle="tab">keygen</a></li>-->
+                    <!--<li><a href="#encrypt" data-toggle="tab">encrypt</a></li>-->
+                    <!--<li><a href="#decrypt" data-toggle="tab">decrypt</a></li>-->
+                <!--</ul>-->
+                <!--<div id="myTabContent" class="tab-content">-->
+                    <!--<br />-->
+                    <!--<div class="tab-pane fade in active" id="setup">-->
+                        <!--<ol>-->
+                            <!--<li>-->
+                                <!--初始化阶为素数p的乘法循环群G_0,设置g为G的生成元。-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--随机选取两个指数\(α,β \in Z_p \),计算\(h=g^β,f=g^{1/g},k=e(g,g)^α \)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--生成\(PK=(G_0,g,h,f,k)\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--生成\(MK=(β,g^α)\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--序列化PK,MK,并输出公钥(PK),主密钥(MK)文件-->
+                            <!--</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="keygen">-->
+                        <!--<ol>-->
+                            <!--<li>-->
+                                <!--输入公钥PK,主密钥MK以及用户属性串S,j为属性串中的单个属性,\(j \in S\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--随机选取一个随机数\(r \in Z_p \)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--对每一个\(j \in S\)选取随机数\(r_j \in Z_p \),计算\(D=g^{(α+r)/β}, \forall j \in S:D_j=g^r \cdot H(j)^{r_j},D_j^,=g^{r_j} \)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--生成\(SK=(D,\forall j \in S:D_j,D_j^,)\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--序列化SK,并输出秘钥(SK)文件-->
+                            <!--</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="encrypt">-->
+                        <!--<ol>-->
+                            <!--<li>-->
+                                <!--输入公钥PK,访问控制策略,明文M-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--构建访问控制策略对应的访问树T:其叶子节点为数据所有者设定的属性和属性值以及父节点传于此节点的秘密值，并对其加密处理，只有数据访问者拥有此属性方可解密出此节点的秘密值；非叶子节点为门限节点，数据访问者需满足此门限最低值方可解密此节点秘密值。例如门限为2of3，此节点有3个子节点，数据访问者需至少满足2个子节点才能解密出秘密值。-->
+                                <!--<img style="display:block;" th:src="@{/images/tree.png}" />-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--为访问数的每个节点设置秘密数:该算法 首先会对访问树Τ中的每一个门限节点x选取一个多项式\(f_x\)，多项 式的构造将从根节点自上而下采取如下方式：设\(k_x\)为该节点的门限值，多项式的度\(d_x=k_x-1\)。首先,自上而下从根节点开始,对于根节点R，算法随机选取一个秘密数\(s \in Z_p\)，秘密数s为该多项式的常数项,即\(f_R(0)=s\)，然后设置其多项式\(f_R\),\(f_R\)的其他系数随机选取。-->
+                                <!--对于其余节点x,其秘密数\(s_x=f_x(0)=f_{parent(x)}(index(x))\),此公式的意思为-->
+                                <!--将孩子节点的标记值index(x)从左至右依次标记为1,2,3,...,将节点标记值代入父节点的多项式\(f_{parent(x)}\)中，所得值即为该节点的秘密数。-->
+                                <!--<img style="display:block;" th:src="@{/images/tree02.png}" />-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--根据上一步得到的所有节点的秘密数,计算\(C^,=Me(g,g^{αs}),C=h^s,\forall x \in T:C_x=g^{s_x},C_x^,=H(att(x))^{s_x}\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--生成\(CT=(T,C^,,\forall x \in T:C_x,C_x^,)\)-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--序列化CT,并保存密文(SK)-->
+                            <!--</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                    <!--<div class="tab-pane fade" id="decrypt">-->
+                        <!--<ol>-->
+                            <!--<li>-->
+                                <!--首先定义递归算法DecryptNode(CT,SK,x),该递归算法的作用为计算出该节点的秘密数,它以密文CT,私钥SK以及访问树T的节点x作为输入。递归算法的计算过程如下图所示。-->
+                                <!--<img style="display:block;" th:src="@{/images/01.png}" />-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<p>自下而上遍历访问树调用递归算法。</p>-->
+                                <!--访问树T的节点x分两种情况:x为属性结点,x为门限节点。-->
+                                <!--<ol>-->
+                                    <!--<li>当x为属性结点时，令i=att(x),如果i∈S,那么调用递归算法DecryptNode(CT,SK,x),算出该节点的秘密数\(s_x\)。</li>-->
+                                    <!--<li>x为门限节点,对于x的所有子节点z,计算\(F_z\) = DecryptNode(CT,K,z)。根据下图所示计算该门限节点的秘密数-->
+                                        <!--<img style="display:block;" th:src="@{/images/02.png}" />-->
+                                        <!--现在我们用一个简单的例子来理解上图公式所表达的意思,假设我们已经求出了该门限节点下所有属性节点的秘密数:-->
+                                        <!--<img style="display:block;" th:src="@{/images/tree04.png}" />-->
+                                        <!--换句话说,我们现在知道该门限节点所对应的多项式f(x)上有三个点,分别为(1,8),(2,11),(3,14)。而我们的目标是要求出该门限节点的秘密数，也就是f(0)。根据多项式插值法我们可以得知,若f(x)的度为m,给定任意m+1个点就可以得到多项式的系数,从而求出f(0)。-->
+                                        <!--对于根节点(根节点必为门限节点)有:-->
+                                        <!--<img style="display:block;" th:src="@{/images/03.png}" />-->
+                                    <!--</li>-->
+                                <!--</ol>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--算法通过下面计算解密得出明文-->
+                                <!--<img style="display:block;" th:src="@{/images/04.png}" />-->
+                            <!--</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="container" style="width: 100%;">-->
+                <!--<section>-->
+                    <!--<div class="tabs tabs-style-tzoid">-->
+                        <!--<nav class="info">-->
+                            <!--<ul>-->
+                                <!--<li><a href="#section-tzoid-1" class="icon icon-home"><span>初始化算法</span></a></li>-->
+                                <!--<li><a href="#section-tzoid-2" class="icon icon-box"><span>私钥生成算法</span></a></li>-->
+                                <!--<li><a href="#section-tzoid-3" class="icon icon-upload"><span>加密算法</span></a></li>-->
+                                <!--<li><a href="#section-tzoid-4" class="icon icon-display"><span>解密算法</span></a></li>-->
+                            <!--</ul>-->
+                        <!--</nav>-->
+                        <!--<div class="content-wrap">-->
+                            <!--<section id="section-tzoid-1">-->
+                                <!--<div class="tab-pane fade in active" id="setup">-->
+                                    <!--<div class="panel panel-default border-left-red">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--初始化阶为素数p的乘法循环群G_0,设置g为G的生成元。-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-blue">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--随机选取两个指数\(α,β \in Z_p \),计算\(h=g^β,f=g^{1/g},k=e(g,g)^α \)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-green">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--生成\(PK=(G_0,g,h,f,k)\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-yellow">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--生成\(MK=(β,g^α)\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-red">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--序列化PK,MK,并输出公钥(PK),主密钥(MK)文件-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</section>-->
+                            <!--<section id="section-tzoid-2">-->
+                                <!--<div class="tab-pane fade" id="keygen">-->
+                                    <!--<div class="panel panel-default border-left-blue">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--输入公钥PK,主密钥MK以及用户属性串S,j为属性串中的单个属性,\(j \in S\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-yellow">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--随机选取一个随机数\(r \in Z_p \)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-green">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--对每一个\(j \in S\)选取随机数\(r_j \in Z_p \),计算\(D=g^{(α+r)/β}, \forall j \in S:D_j=g^r \cdot H(j)^{r_j},D_j^,=g^{r_j} \)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-red">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--生成\(SK=(D,\forall j \in S:D_j,D_j^,)\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-blue">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--序列化SK,并输出秘钥(SK)文件-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</section>-->
+                            <!--<section id="section-tzoid-3">-->
+                                <!--<div class="tab-pane fade" id="encrypt">-->
+                                    <!--<div class="panel panel-default border-left-yellow">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--输入公钥PK,访问控制策略,明文M-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-green">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--构建访问控制策略对应的访问树T:其叶子节点为数据所有者设定的属性和属性值以及父节点传于此节点的秘密值，并对其加密处理，只有数据访问者拥有此属性方可解密出此节点的秘密值；非叶子节点为门限节点，数据访问者需满足此门限最低值方可解密此节点秘密值。例如门限为2of3，此节点有3个子节点，数据访问者需至少满足2个子节点才能解密出秘密值。-->
+                                            <!--<img style="display:block;" th:src="@{/images/tree.png}" />-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-red">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--为访问数的每个节点设置秘密数:该算法 首先会对访问树Τ中的每一个门限节点x选取一个多项式\(f_x\)，多项 式的构造将从根节点自上而下采取如下方式：设\(k_x\)为该节点的门限值，多项式的度\(d_x=k_x-1\)。首先,自上而下从根节点开始,对于根节点R，算法随机选取一个秘密数\(s \in Z_p\)，秘密数s为该多项式的常数项,即\(f_R(0)=s\)，然后设置其多项式\(f_R\),\(f_R\)的其他系数随机选取。-->
+                                            <!--对于其余节点x,其秘密数\(s_x=f_x(0)=f_{parent(x)}(index(x))\),此公式的意思为-->
+                                            <!--将孩子节点的标记值index(x)从左至右依次标记为1,2,3,...,将节点标记值代入父节点的多项式\(f_{parent(x)}\)中，所得值即为该节点的秘密数。-->
+                                            <!--<img style="display:block;" th:src="@{/images/tree02.png}" />-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-blue">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--根据上一步得到的所有节点的秘密数,计算\(C^,=Me(g,g^{αs}),C=h^s,\forall x \in T:C_x=g^{s_x},C_x^,=H(att(x))^{s_x}\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-yellow">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--生成\(CT=(T,C^,,\forall x \in T:C_x,C_x^,)\)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-green">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--序列化CT,并保存密文(SK)-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</section>-->
+                            <!--<section id="section-tzoid-4">-->
+                                <!--<div class="tab-pane fade" id="decrypt">-->
+                                    <!--<div class="panel panel-default border-left-red">-->
+                                        <!--<div class="panel-body">-->
+                                                <!--首先定义递归算法DecryptNode(CT,SK,x),该递归算法的作用为计算出该节点的秘密数,它以密文CT,私钥SK以及访问树T的节点x作为输入。递归算法的计算过程如下图所示。-->
+                                                <!--<img style="display:block;" th:src="@{/images/01.png}" />-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-blue">-->
+                                        <!--<div class="panel-body">-->
+                                                <!--<p>自下而上遍历访问树调用递归算法。</p>-->
+                                                <!--访问树T的节点x分两种情况:x为属性结点,x为门限节点。-->
+                                                <!--<ol>-->
+                                                    <!--<li>当x为属性结点时，令i=att(x),如果i∈S,那么调用递归算法DecryptNode(CT,SK,x),算出该节点的秘密数\(s_x\)。</li>-->
+                                                    <!--<li>x为门限节点,对于x的所有子节点z,计算\(F_z\) = DecryptNode(CT,K,z)。根据下图所示计算该门限节点的秘密数-->
+                                                        <!--<img style="display:block;" th:src="@{/images/02.png}" />-->
+                                                        <!--现在我们用一个简单的例子来理解上图公式所表达的意思,假设我们已经求出了该门限节点下所有属性节点的秘密数:-->
+                                                        <!--<img style="display:block;" th:src="@{/images/tree04.png}" />-->
+                                                        <!--换句话说,我们现在知道该门限节点所对应的多项式f(x)上有三个点,分别为(1,8),(2,11),(3,14)。而我们的目标是要求出该门限节点的秘密数，也就是f(0)。根据多项式插值法我们可以得知,若f(x)的度为m,给定任意m+1个点就可以得到多项式的系数,从而求出f(0)。-->
+                                                        <!--对于根节点(根节点必为门限节点)有:-->
+                                                        <!--<img style="display:block;" th:src="@{/images/03.png}" />-->
+                                                    <!--</li>-->
+                                                <!--</ol>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel panel-default border-left-green">-->
+                                        <!--<div class="panel-body">-->
+                                                <!--算法通过下面计算解密得出明文-->
+                                                <!--<img style="display:block;" th:src="@{/images/04.png}" />-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</section>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
+        </div>
+
+    </div>
+    <div th:include="fragment :: js"></div>
+    <script th:src="@{/js/jquery.bootstrap.wizard.min.js}"></script>
+    <script th:src="@{/js/prettify.js}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#rootwizard').bootstrapWizard({'tabClass': 'bwizard-steps'});
+        });
+    </script>
+</body>
+</html>

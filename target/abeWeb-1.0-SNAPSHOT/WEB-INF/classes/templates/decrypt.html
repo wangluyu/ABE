@@ -1,0 +1,60 @@
+<div th:fragment="body">
+    <br />
+    <b>算法介绍:</b>
+    <ul>
+        <li>解密算法。该算法使用公钥和符合访问控制策略的私钥来解密加密的文件。</li>
+    </ul>
+    <b>所需操作:</b>
+    <ol>
+        <li>点击"解密"按钮。</li>
+        <li>在弹窗中点击"选择"按钮,选择"publicKey"文件与"privateKey"文件,点击"提交"按钮</li>
+        <li>若该私钥符合访问控制策略,则可成功下载解密后的文件。</li>
+    </ol>
+    <table class="table table-hover" id="table" width="100%">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>大小 </th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </tfoot>
+    </table>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="decryptModal" tabindex="-1" role="dialog" aria-labelledby="decryptModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="decryptModalLabel">文件解密</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="decryptFrom" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <input id="decrypt" name="decryptfile" type="file" multiple="true" class="file-loading" enctype="multipart/form-data" />
+                        </div>
+                        <div class="form-group">
+                            <button id="decryptSubmit" type="button" class="btn btn-primary btn-block">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+<div th:fragment="js">
+    <script th:src="@{/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/datatables/js/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/decrypt.js}"></script>
+</div>

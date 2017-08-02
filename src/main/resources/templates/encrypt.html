@@ -1,0 +1,41 @@
+<div th:fragment="body">
+    <br />
+    <b>算法介绍:</b>
+    <ul>
+        <li>加密算法。该算法使用公钥和一组访问控制策略对文件进行加密。</li>
+        <li>此处提供一组访问控制策略：组织机构:深圳大学计算机与软件学院 角色:学生 班级:01 班级:02 1of2 3of3</li>
+    </ul>
+    <b>所需操作:</b>
+    <ol>
+        <li>点击"选择"按钮,选择"publicKey"文件与想要加密的文件。</li>
+        <li>输入访问控制策略</li>
+        <li>点击"下一步"。</li>
+    </ol>
+    <br />
+    <form id="encryptFrom" class="form-horizontal" role="form">
+        <div class="form-group">
+            <input id="encrypt" name="encryptfile" type="file" multiple="true" class="file-loading" enctype="multipart/form-data" />
+        </div>
+        <div class="form-group">
+            <label for="policy" class="col-sm-2 control-label">访问控制策略:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control extra" id="policy" placeholder="请输入访问控制策略" />
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="encryptSubmit" type="button" class="btn btn-primary btn-block">提交</button>
+        </div>
+    </form>
+</div>
+<div th:fragment="js">
+<script>
+$(document).ready(function(){
+    //FileInput Bootstrap
+//    var encryptFileInput = new FileInput();
+//    encryptFileInput.Init("encrypt", "/file/encrypt","encryptFrom",10,true);
+//    $('#encryptSubmit').click(function () {
+//        $('#encrypt').fileinput('upload');
+//    });
+});
+</script>
+</div>
